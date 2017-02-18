@@ -73,7 +73,7 @@ public interface DbCommon {
      * @return CachedRowSet
      * @throws java.sql.SQLException
      */
-    public Object queryObj(String sql) throws SQLException;
+    public Object queryObj(String sql, Class clazz) throws SQLException;
 
     /**
      * 用来获取多笔数据结果集,该方法默认使用Statement, 如果要使用PreparedStatement,则要首先调用setPstmt()方法
@@ -94,7 +94,7 @@ public interface DbCommon {
      * @return List
      * @throws SQLException
      */
-    public List queryAllObj(String sql, int limit) throws SQLException;
+    public List queryAllObj(String sql, int limit, Class clazz) throws SQLException;
 
 
     /**
@@ -152,7 +152,7 @@ public interface DbCommon {
      * @return CachedRowSet
      * @throws java.sql.SQLException
      */
-    public Object queryObj() throws SQLException;
+    public Object queryObj(Class clazz) throws SQLException;
 
     /**
      * 用来获取多笔数据结果集,该方法默认使用Statement, 如果要使用PreparedStatement,则要首先调用setPstmt()方法
@@ -169,7 +169,7 @@ public interface DbCommon {
      * @return List
      * @throws SQLException
      */
-    public List queryAllObj() throws SQLException;
+    public List queryAllObj(Class clazz) throws SQLException;
 
 
     /**

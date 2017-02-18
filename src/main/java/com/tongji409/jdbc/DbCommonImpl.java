@@ -5,6 +5,7 @@ import com.sun.rowset.CachedRowSetImpl;
 import javax.sql.rowset.CachedRowSet;
 import java.io.InputStream;
 import java.io.Reader;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
@@ -180,10 +181,10 @@ public class DbCommonImpl implements DbCommon {
      * @return CachedRowSet
      * @throws SQLException
      */
-    public Object queryObj(String sql) throws SQLException {
+    public Object queryObj(String sql,Class clazz) throws SQLException {
         Object obj = null;
         try {
-            List list = this.queryAllObj(sql,1);
+            List list = this.queryAllObj(sql,1,clazz);
             if(list != null && list.size() == 1){
                 obj = list.get(0);
             }
@@ -237,13 +238,13 @@ public class DbCommonImpl implements DbCommon {
      * @return List
      * @throws SQLException
      */
-    public List queryAllObj(String sql, int limit) throws SQLException {
+    public List queryAllObj(String sql, int limit, Class clazz) throws SQLException {
         CachedRowSet rs = null;
         List list = null;
         try {
             list = new ArrayList();
             for(rs = this.getAllCachedRowSet(sql,limit);rs.next();){
-                list.add(getObjFromRs(rs));
+                list.add(getObjFromRs(rs,clazz));
             }
         } catch (SQLException e) {
             throw new SQLException("执行queryAllObj失败" + sql + e);
@@ -403,10 +404,10 @@ public class DbCommonImpl implements DbCommon {
      * @return CachedRowSet
      * @throws SQLException
      */
-    public Object queryObj() throws SQLException {
+    public Object queryObj(Class clazz) throws SQLException {
         Object obj = null;
         try {
-            List list = this.queryAllObj();
+            List list = this.queryAllObj(clazz);
             if(list != null && list.size() == 1){
                 obj = list.get(0);
             }
@@ -454,12 +455,12 @@ public class DbCommonImpl implements DbCommon {
      * @return List
      * @throws SQLException
      */
-    public List queryAllObj() throws SQLException {
+    public List queryAllObj(Class clazz) throws SQLException {
         CachedRowSet rs = null;
         List list = null;
         try {
             for(rs = this.getAllCachedRowSet();rs.next();){
-                list.add(getObjFromRs(rs));
+                list.add(getObjFromRs(rs,clazz));
             }
         } catch (SQLException e) {
             throw new SQLException("执行queryAllObj失败" + sql + e);
@@ -499,6 +500,35 @@ public class DbCommonImpl implements DbCommon {
      */
     public void PreparedStatement(String sql) throws SQLException {
         this.PreparedStatement(sql,0);
+    }
+
+    /**
+     * 该方法用来将rs结果集转换为对象,即数据传输类对象VO
+     * @param rs
+     * @param clazz
+     * @throws SQLException
+     */
+    public Object getObjFromRs(ResultSet rs, Class clazz) throws SQLException, IllegalAccessException, InstantiationException {
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int colCount = rsmd.getColumnCount();
+        Field[] fields = clazz.getDeclaredFields();
+        Object obj = clazz.newInstance();//构造业务对象实体
+        //将每一个字段取出进行赋值
+        for(int i = 1;i<=colCount;i++){
+            Object value = rs.getObject(i);
+            //寻找该列对应的对象属性
+            for(int j=0;j<fields.length;j++){
+                Field f = fields[j];
+                //如果匹配进行赋值
+                if(f.getName().equalsIgnoreCase(rsmd.getColumnName(i))){
+                    boolean flag = f.isAccessible();
+                    f.setAccessible(true);
+                    f.set(obj, value);
+                    f.setAccessible(flag);
+                }
+            }
+        }
+        return obj;
     }
 
     /**
