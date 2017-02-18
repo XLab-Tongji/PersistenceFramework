@@ -83,7 +83,7 @@ public interface DbCommon {
      * @return Map[]
      * @throws SQLException
      */
-    public Map queryAllMap(String sql, int limit) throws SQLException;
+    public Map[] queryAllMap(String sql, int limit) throws SQLException;
 
     /**
      * 用来获取多笔数据结果集,希望返回的是对象,可以转换为Javabean
@@ -160,7 +160,7 @@ public interface DbCommon {
      * @return Map[]
      * @throws SQLException
      */
-    public Map queryAllMap() throws SQLException;
+    public Map[] queryAllMap() throws SQLException;
 
     /**
      * 用来获取多笔数据结果集,希望返回的是对象,可以转换为Javabean
