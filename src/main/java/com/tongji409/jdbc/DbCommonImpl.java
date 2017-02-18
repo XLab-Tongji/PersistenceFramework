@@ -344,7 +344,7 @@ public class DbCommonImpl implements DbCommon {
     public ResultSet getAllResultSet() throws SQLException {
         ResultSet rs = null;
         if(pstmt == null )
-            throw new SQLException("请首先创建或者获取一个PreparedStatement")
+            throw new SQLException("请首先创建或者获取一个PreparedStatement");
         try {
             rs = pstmt.executeQuery();
         } catch (SQLException e) {
@@ -479,18 +479,26 @@ public class DbCommonImpl implements DbCommon {
      * @throws SQLException
      */
     public int executeUpdate() throws SQLException {
-        return 0;
+        return pstmt.executeUpdate();
     }
 
     /**
      * 用来通过PreparedStatement设定多笔数据结果集
-     *
      * @param sql
      * @param limit
      * @throws SQLException
      */
     public void PreparedStatement(String sql, int limit) throws SQLException {
+        this.PreparedStatement(sql,limit,0);
+    }
 
+    /**
+     * 用来通过PreparedStatement设定多笔数据结果集
+     * @param sql
+     * @throws SQLException
+     */
+    public void PreparedStatement(String sql) throws SQLException {
+        this.PreparedStatement(sql,0);
     }
 
     /**
@@ -787,5 +795,89 @@ public class DbCommonImpl implements DbCommon {
         pstmt.setTimestamp(parameterIndex, x);
     }
 
+    /**
+     * 用来通过PreparedStatement设定多笔数据结果集
+     * @param sql
+     * @param limit ,用来限制查询笔数, <=0则代表不限制
+     * @param gk, 用来自动生成主键值, >表示自动生成主键
+     * @throws SQLException
+     */
+    public void PreparedStatement(String sql, int limit, int gk) throws SQLException {
+        this.sql = sql;
+        pstmt = null;
+        //判断连接是否为空或已关闭
+        if(conn == null || conn.isClosed())
+            throw new SQLException("请首先创建或获取一个连接");
+        //判断传进来的sql是否为空
+        if(sql == null || "".equals(sql)){
+            throw new SQLException("sql语句为空");
+        }
+        try {
+            synchronized (this.conn) {
+                if(gk > 0) {
+                    pstmt = this.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                } else {
+                    pstmt = this.conn.prepareStatement(sql);
+                }
+            }
+            if(limit > 0) {
+                pstmt.setMaxRows(limit);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("执行PreparedStatement失败" + sql + e);
+        }
+    }
 
+    /**
+     * 返回自动生成的主键值
+     * @throws SQLException
+     */
+    public int getGeneratedKeys() throws SQLException {
+        ResultSet rs = pstmt.getGeneratedKeys();
+        int gk = Integer.MIN_VALUE;
+        if(rs.next())
+            gk = rs.getInt(1);
+        rs.close();
+        rs = null;
+        return gk;
+    }
+
+    /**
+     * 用来增加Batch
+     * @throws SQLException
+     */
+    public void addBatch() throws SQLException{
+        pstmt.addBatch();
+    }
+
+    /**
+     * 用来执行Batch
+     * @throws SQLException
+     */
+    public int[] executeBatch() throws SQLException{
+        return pstmt.executeBatch();
+    }
+
+    /**
+     * 用来清空Batch
+     * @throws SQLException
+     */
+    public void clearBatch() throws SQLException{
+        pstmt.clearBatch();
+    }
+
+    /**
+     * 设定conn
+     * @param conn
+     */
+    public void setConn(Connection conn){
+        this.conn = conn;
+    }
+
+    /**
+     * 获取conn
+     */
+    public Connection getConn(){
+        return this.conn;
+    }
 }
