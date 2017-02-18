@@ -58,7 +58,7 @@ public class DbCommonImpl implements DbCommon {
     public ResultSet getResultSet(String sql) throws SQLException {
         ResultSet rs = null;
         try {
-            this.getAllResultSet(sql,1);
+            rs = this.getAllResultSet(sql,1);
         } catch (SQLException e) {
             throw new SQLException("执行getResultSet失败" + sql + e);
         } finally {

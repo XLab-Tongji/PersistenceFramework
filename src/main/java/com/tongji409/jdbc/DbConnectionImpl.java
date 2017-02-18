@@ -14,13 +14,13 @@ public class DbConnectionImpl implements DbConnection {
     private String DB_DRIVER = "com.mysql.jdbc.Driver";
     private String DB_USER = "root";
     private String DB_PASSWD = "1234";
-    private String DB_URL = "jdbc:mysql://localhost:3306/mydb";
+    private String DB_URL = "jdbc:mysql://localhost:3306/test";
 
     private Connection conn;
     private Object objId;
     private boolean isClosed = false;
 
-    private DbConnectionImpl(Object obj){
+    public DbConnectionImpl(Object obj){
         this.objId = obj;
     }
 
