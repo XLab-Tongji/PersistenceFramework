@@ -3,7 +3,7 @@ package com.tongji409.jdbc;
 /**
  * @author lijiechu
  * @create on 17/2/18
- * @description
+ * @description 实体类
  */
 public class User {
 

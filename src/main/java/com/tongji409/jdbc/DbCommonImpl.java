@@ -24,7 +24,6 @@ public class DbCommonImpl implements DbCommon {
     private Statement stmt = null;
     private boolean isStmt = true;
     private String sql = "";
-    //private InfoAndOut
 
     /**
      * 构造函数
@@ -700,16 +699,19 @@ public class DbCommonImpl implements DbCommon {
     }
 
     /**
-     * @description 用来设定PreparedStatement的字节型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的字节型参数
+     * @param parameterIndex
+     * @param x
      */
     public void setBytes(int parameterIndex, byte[] x) throws SQLException {
         pstmt.setBytes(parameterIndex, x);
     }
 
     /**
-     * @description  用来设定PreparedStatement的字节流型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的字节流型参数
+     * @param parameterIndex
+     * @param reader
+     * @param length
      */
     public void setCharacterStream(int parameterIndex, Reader reader, int length)
             throws SQLException {
@@ -717,32 +719,41 @@ public class DbCommonImpl implements DbCommon {
     }
 
     /**
-     * @description  用来设定PreparedStatement的Double型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的Double型参数
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setDouble(int parameterIndex, double x) throws SQLException {
         pstmt.setDouble(parameterIndex, x);
     }
 
     /**
-     * @description  用来设定PreparedStatement中参数的null值
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement中参数的null值
+     * @param parameterIndex
+     * @param sqlType
+     * @throws SQLException
      */
     public void setNull(int parameterIndex, int sqlType) throws SQLException {
         pstmt.setNull(parameterIndex, sqlType);
     }
 
     /**
-     * @description  用来设定PreparedStatement的URL型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的URL型参数
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setURL(int parameterIndex, URL x) throws SQLException {
         pstmt.setURL(parameterIndex, x);
     }
 
     /**
-     * @description  用来设定PreparedStatement的Object型参数，根据目标的类型
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的Object型参数，根据目标的类型
+     * @param parameterIndex
+     * @param x
+     * @param targetSqlType
+     * @throws SQLException
      */
     public void setObject(int parameterIndex, Object x, int targetSqlType)
             throws SQLException {
@@ -750,8 +761,11 @@ public class DbCommonImpl implements DbCommon {
     }
 
     /**
-     * @description  用来设定PreparedStatement的二进制型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的二进制型参数
+     * @param parameterIndex
+     * @param x
+     * @param length
+     * @throws SQLException
      */
     public void setBinaryStream(int parameterIndex, InputStream x, int length)
             throws SQLException {
@@ -759,16 +773,20 @@ public class DbCommonImpl implements DbCommon {
     }
 
     /**
-     * @description  用来设定PreparedStatement的Boolean型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的Boolean型参数
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setBoolean(int parameterIndex, boolean x) throws SQLException {
         pstmt.setBoolean(parameterIndex, x);
     }
 
     /**
-     * @description  用来设定PreparedStatement的BigDecimal型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的BigDecimal型参数
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setBigDecimal(int parameterIndex, BigDecimal x)
             throws SQLException {
@@ -776,32 +794,41 @@ public class DbCommonImpl implements DbCommon {
     }
 
     /**
-     * @description  用来设定PreparedStatement的Float型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的Float型参数
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setFloat(int parameterIndex, float x) throws SQLException {
         pstmt.setFloat(parameterIndex, x);
     }
 
     /**
-     * @description  用来设定PreparedStatement的时间型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的时间型参数
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setTime(int parameterIndex, Time x) throws SQLException {
         pstmt.setTime(parameterIndex, x);
     }
 
     /**
-     * @description  用来设定PreparedStatement的字节型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的字节型参数
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setByte(int parameterIndex, byte x) throws SQLException {
         pstmt.setByte(parameterIndex, x);
     }
 
     /**
-     * @description  用来设定PreparedStatement的时间型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的时间型参数
+     * @param parameterIndex
+     * @param x
+     * @param cal
+     * @throws SQLException
      */
     public void setTime(int parameterIndex, Time x, Calendar cal)
             throws SQLException {
@@ -809,16 +836,20 @@ public class DbCommonImpl implements DbCommon {
     }
 
     /**
-     * @description  用来设定PreparedStatement的Object型参数
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的Object型参数
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setObject(int parameterIndex, Object x) throws SQLException {
         pstmt.setObject(parameterIndex, x);
     }
 
     /**
-     * @description  用来设定PreparedStatement的时间戳型参数，INSERT INTO User(username, CREATEDATETIME) VALUES(?,CURRENT TIMESTAMP)
-     * @date  2016年1月13日
+     * 用来设定PreparedStatement的时间戳型参数，INSERT INTO User(username, CREATEDATETIME)VALUES(?,CURRENT TIMESTAMP)
+     * @param parameterIndex
+     * @param x
+     * @throws SQLException
      */
     public void setTimestamp(int parameterIndex, Timestamp x)
             throws SQLException {
